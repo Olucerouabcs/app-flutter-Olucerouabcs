@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
         '/signup': (context) => SignUpPage(),
         '/forgot': (context) => ForgotPage(),
         '/reset': (context) => ResetPage(),
+        '/menu': (context) => MenuPage(),
       },
     );
   }
@@ -51,12 +52,12 @@ class _LoginPageState extends State<LoginPage> {
             Text(
               'ToDo App',
               textAlign: TextAlign.center,
-              style: TextStyle(height: -1, fontSize: 30),
+              style: TextStyle(height: 1, fontSize: 30),
             ),
             Icon(
               Icons.login,
               size: 100.0,
-              color: Colors.green,
+              color: Colors.blue,
             ),
             SizedBox(height: 20.0),
             TextField(
@@ -83,7 +84,7 @@ class _LoginPageState extends State<LoginPage> {
                   passwordError = _contrasenaValidator(passwordController.text);
                 });
                 if (emailError.isEmpty && passwordError.isEmpty) {
-                  // Realiza la autenticación aquí
+                  Navigator.pushNamed(context, '/menu');
                 }
               },
               child: Text('Iniciar sesión'),
@@ -138,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Text(
               'ToDo App',
               textAlign: TextAlign.center,
-              style: TextStyle(height: -1, fontSize: 30),
+              style: TextStyle(height: 1, fontSize: 30),
             ),
             Icon(
               Icons.person_add,
@@ -178,11 +179,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   emailError = _emailValidator(emailController.text);
                   passwordError = _contrasenaValidator(passwordController.text);
                 });
-                if (nameError.isEmpty &&
-                    emailError.isEmpty &&
-                    passwordError.isEmpty) {
-                  // Realiza el registro aquí
-                }
               },
               child: Text('Registrarse'),
             ),
@@ -226,7 +222,7 @@ class _ForgotPageState extends State<ForgotPage> {
             Text(
               'ToDo App',
               textAlign: TextAlign.center,
-              style: TextStyle(height: -1, fontSize: 30),
+              style: TextStyle(height: 1, fontSize: 30),
             ),
             Icon(
               Icons.restart_alt,
@@ -246,18 +242,14 @@ class _ForgotPageState extends State<ForgotPage> {
               onPressed: () {
                 setState(() {
                   emailError = _emailValidator(emailController.text);
+                  Navigator.pushNamed(context, '/reset');
                 });
-                if (emailError.isEmpty) {
-                  // Enviar correo de recuperación de contraseña
-                }
               },
               child: Text('Enviar'),
             ),
             SizedBox(height: 10.0),
             TextButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/');
-              },
+              onPressed: () {},
               child: Text('Ya la recordé'),
             ),
           ],
@@ -297,7 +289,7 @@ class _ResetPageState extends State<ResetPage> {
             Text(
               'ToDo App',
               textAlign: TextAlign.center,
-              style: TextStyle(height: -1, fontSize: 30),
+              style: TextStyle(height: 1, fontSize: 30),
             ),
             Icon(
               Icons.restart_alt,
@@ -343,17 +335,100 @@ class _ResetPageState extends State<ResetPage> {
                     confirmPasswordError = 'Las contraseñas no coinciden';
                   } else {
                     confirmPasswordError = '';
+                    Navigator.pushNamed(context, '/');
                   }
                 });
-                if (passwordError.isEmpty &&
-                    newPasswordError.isEmpty &&
-                    confirmPasswordError.isEmpty) {
-                  // Cambiar la contraseña
-                }
               },
               child: Text('Cambiar'),
             ),
             SizedBox(height: 10.0),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class MenuPage extends StatefulWidget {
+  @override
+  _MenuPageState createState() => _MenuPageState();
+}
+
+class _MenuPageState extends State<MenuPage> {
+  List<String> list = [];
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  bool checkboxValue = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Menu'),
+        automaticallyImplyLeading: false,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Nombre de tarea',
+              textAlign: TextAlign.left,
+              style: TextStyle(height: 5, fontSize: 25),
+            ),
+            TextField(
+              controller: nameController,
+              decoration: InputDecoration(
+                hintText: 'Tarea',
+              ),
+            ),
+            SizedBox(height: 20.0),
+            TextField(
+              controller: descriptionController,
+              decoration: InputDecoration(
+                hintText: 'Descripcion',
+              ),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                String name = nameController.text;
+                String description = descriptionController.text;
+                if (name.isNotEmpty) {
+                  setState(() {
+                    list.add("Nombre: $name:\n$description");
+                  });
+                  nameController.clear();
+                  descriptionController.clear();
+                }
+              },
+              child: Icon(
+                Icons.add,
+                size: 30.0,
+                color: Colors.white,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return CheckboxListTile(
+                  value: checkboxValue,
+                  onChanged: (bool? value) {
+                    setState(() {
+                      checkboxValue = value!;
+                    });
+                  },
+                  title: const Text('name'),
+                  subtitle: const Text('Supporting text'),
+                  //title: Text(list[index]),
+                );
+              },
+            ),
           ],
         ),
       ),
