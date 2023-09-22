@@ -355,7 +355,8 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  List<String> list = [];
+  //List<String> list = [];
+  List<Map<String, dynamic>> list = [];
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -399,7 +400,14 @@ class _MenuPageState extends State<MenuPage> {
                 String description = descriptionController.text;
                 if (name.isNotEmpty) {
                   setState(() {
-                    list.add("Nombre: $name:\n$description");
+                    // Agregar un elemento a la lista
+                    Map<String, dynamic> nuevaTarea = {
+                      'name': name,
+                      'description': description,
+                      'isChecked': false,
+                    };
+                    list.add(nuevaTarea);
+                    //list.add("Nombre: $name:\n$description");
                   });
                   nameController.clear();
                   descriptionController.clear();
@@ -416,6 +424,8 @@ class _MenuPageState extends State<MenuPage> {
               shrinkWrap: true,
               itemCount: list.length,
               itemBuilder: (context, index) {
+                String name = list[index]['name'];
+                String description = list[index]['description'];
                 return CheckboxListTile(
                   value: checkboxValue,
                   onChanged: (bool? value) {
@@ -423,8 +433,8 @@ class _MenuPageState extends State<MenuPage> {
                       checkboxValue = value!;
                     });
                   },
-                  title: const Text('name'),
-                  subtitle: const Text('Supporting text'),
+                  title: Text(name),
+                  subtitle: Text(description),
                   //title: Text(list[index]),
                 );
               },
