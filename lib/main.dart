@@ -357,6 +357,7 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   //List<String> list = [];
   List<Map<String, dynamic>> list = [];
+  int uniqueId = 1; //Primero
 
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -402,11 +403,13 @@ class _MenuPageState extends State<MenuPage> {
                   setState(() {
                     // Agregar un elemento a la lista
                     Map<String, dynamic> nuevaTarea = {
+                      'id': uniqueId,
                       'name': name,
                       'description': description,
                       'isChecked': false,
                     };
                     list.add(nuevaTarea);
+                    uniqueId++;
                     //list.add("Nombre: $name:\n$description");
                   });
                   nameController.clear();
@@ -424,18 +427,40 @@ class _MenuPageState extends State<MenuPage> {
               shrinkWrap: true,
               itemCount: list.length,
               itemBuilder: (context, index) {
+                //int taskId = list[index]['id'];
                 String name = list[index]['name'];
                 String description = list[index]['description'];
-                return CheckboxListTile(
-                  value: checkboxValue,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      checkboxValue = value!;
-                    });
-                  },
-                  title: Text(name),
-                  subtitle: Text(description),
-                  //title: Text(list[index]),
+                bool isChecked = list[index]['isChecked'];
+                return ListTile(
+                  title: Row(
+                    children: [
+                      Expanded(
+                        child: CheckboxListTile(
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              list[index]['isChecked'] = value;
+                            });
+                          },
+                          title: Text(name,
+                              style: TextStyle(
+                                decoration: isChecked
+                                    ? TextDecoration.lineThrough
+                                    : null,
+                              )),
+                          subtitle: Text(description),
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            list.removeAt(index);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
                 );
               },
             ),
