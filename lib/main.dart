@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Login and Signup',
       theme: ThemeData(
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.green,
       ),
       initialRoute: '/',
       routes: {
@@ -64,6 +64,12 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 hintText: 'Correo electrónico',
                 errorText: emailError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: emailController,
             ),
@@ -73,6 +79,12 @@ class _LoginPageState extends State<LoginPage> {
               decoration: InputDecoration(
                 hintText: 'Contraseña',
                 errorText: passwordError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: passwordController,
             ),
@@ -151,6 +163,12 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: InputDecoration(
                 hintText: 'Nombre',
                 errorText: nameError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: nameController,
             ),
@@ -159,6 +177,12 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: InputDecoration(
                 hintText: 'Correo electrónico',
                 errorText: emailError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: emailController,
             ),
@@ -168,6 +192,12 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: InputDecoration(
                 hintText: 'Contraseña',
                 errorText: passwordError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: passwordController,
             ),
@@ -234,6 +264,12 @@ class _ForgotPageState extends State<ForgotPage> {
               decoration: InputDecoration(
                 hintText: 'Correo Electrónico',
                 errorText: emailError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: emailController,
             ),
@@ -249,7 +285,9 @@ class _ForgotPageState extends State<ForgotPage> {
             ),
             SizedBox(height: 10.0),
             TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
               child: Text('Ya la recordé'),
             ),
           ],
@@ -302,6 +340,12 @@ class _ResetPageState extends State<ResetPage> {
               decoration: InputDecoration(
                 hintText: 'Contraseña',
                 errorText: passwordError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: passwordController,
             ),
@@ -311,6 +355,12 @@ class _ResetPageState extends State<ResetPage> {
               decoration: InputDecoration(
                 hintText: 'Nueva Contraseña',
                 errorText: newPasswordError,
+                errorBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
               ),
               controller: newPasswordController,
             ),
@@ -376,10 +426,15 @@ class _MenuPageState extends State<MenuPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            Icon(
+              Icons.assignment_rounded,
+              size: 100.0,
+              color: Colors.green,
+            ),
             Text(
               'Nombre de tarea',
               textAlign: TextAlign.left,
-              style: TextStyle(height: 5, fontSize: 25),
+              style: TextStyle(height: 1, fontSize: 25),
             ),
             TextField(
               controller: nameController,
@@ -464,6 +519,12 @@ class _MenuPageState extends State<MenuPage> {
                 );
               },
             ),
+            TextButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/');
+              },
+              child: Text('Cerrar sesion'),
+            ),
           ],
         ),
       ),
@@ -503,7 +564,7 @@ String _contrasenaValidator(String value) {
     return 'La contraseña debe tener al menos 6 caracteres';
   }
 
-  bool hasSpecialChar = RegExp(r'[!@#$%^&*(),.?":{}|<>]').hasMatch(value);
+  bool hasSpecialChar = RegExp(r'[!ñ@#$%^&*(),.?":{}|<>]').hasMatch(value);
   bool hasNumber = RegExp(r'[0-9]').hasMatch(value);
 
   if (!hasSpecialChar || !hasNumber) {
